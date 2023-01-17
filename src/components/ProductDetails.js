@@ -1,19 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import styles from "./ProductDetails.module.css"
-import {useSelector} from "react-redux";
 import {useParams, Link} from "react-router-dom"
-import {fetchProduct} from "../redux/product/productAction";
+import axios from "axios";
 
 
 const ProductDetails = () => {
-    const [product, setProduct] = useState([]);
-    const Products = useSelector(state => state.productsState.products);
-    const param = useParams();
+    const[Product , setProduct] = useState([]);
+    const params = useParams();
     useEffect(() => {
-        setProduct(fetchProduct)
-    })
-    const Product = Products[param.id - 1];
-    console.log(Products[param.id - 1], 'aida')
+        axios.get(`https://fakestoreapi.com/products/${params.id}`)
+            .then(res => {
+                setProduct(res.data)
+            })
+    }, [params.id])
     const {image, title, price, description, category} = Product;
 
     return (
